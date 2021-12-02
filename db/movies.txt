@@ -1,0 +1,6 @@
+{"id": "1033", "title": "Dune", "img_path": "/imgs/background1.jpg", "description": "Very nice movie", "price": 16, "tickets": 0}
+{"id": "1045", "title": "Dune", "img_path": "/imgs/background1.jpg", "description": "Very nice movie", "price": "16", "tickets": "3"}
+{"id": "1020", "title": "Dune", "img_path": "/imgs/background1.jpg", "description": "Very nice movie", "price": 16, "tickets": 0}
+{"id": "1061", "title": "Star Trek", "img_path": "/imgs/background1.jpg", "description": "Very nice movie", "price": "18", "tickets": "1"}
+{"id": "1153", "title": "Star Wars", "img_path": "/imgs/background1.jpg", "description": "nice movie", "price": "15", "tickets": "9"}
+{"id": "1155", "title": "Star Wars 5", "img_path": "/imgs/background1.jpg", "description": "Very nice movie", "price": "15", "tickets": 0}

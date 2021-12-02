@@ -1,0 +1,2 @@
+{"username": "miro", "password": "123456", "first_name": "miro", "last_name": "miro", "role": "admin", "id": "1009"}
+{"username": "1", "password": "1", "first_name": "miro", "last_name": "miro", "role": "cashier", "id": "1001"}
