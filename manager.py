@@ -111,10 +111,12 @@ class ManagerDB:
 # # # print(manager.get_item_by_id('1013'))
 # #
 # hall = Hall('1', 60, '1010','1001')
+# print(hall.__dict__)
 # manager_halls = ManagerDB('halls.txt')
-# # manager_movie = ManagerDB('movies.txt')
+# # # manager_movie = ManagerDB('movies.txt')
 # manager_halls.post_items(hall)
-# #
+#
+# # #
 # # movie = Movie('Dune', '/imgs/background1.jpg', 'Very nice movie', 16)
 # # manager_movie.post_items(movie)
 # manager_program = ManagerDB('programs.txt')

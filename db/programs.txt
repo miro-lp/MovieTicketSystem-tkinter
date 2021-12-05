@@ -1,2 +1,5 @@
-{"id": "1161", "start": "12:00", "end": "14:00", "hall_id": "1157", "movie_id": "1153", "theater_id": "1031", "tickets": "10"}
-{"id": "1162", "start": "18:00", "end": "20:00", "hall_id": "1159", "movie_id": "1155", "theater_id": "1031", "tickets": "9"}
+{"id": "1168", "start": "12:00", "end": "14:00", "hall_id": "1167", "movie_id": "1153", "theater_id": "1031", "tickets": "10"}
+{"id": "1169", "start": "14:00", "end": "16:00", "hall_id": "1170", "movie_id": "1155", "theater_id": "1031", "tickets": "4"}
+{"id": "1171", "start": "16:00", "end": "18:00", "hall_id": "1174", "movie_id": "1164", "theater_id": "1031", "tickets": "3"}
+{"id": "1172", "start": "18:00", "end": "20:00", "hall_id": "1175", "movie_id": "1165", "theater_id": "1031", "tickets": "2"}
+{"id": "1173", "start": "20:00", "end": "22:00", "hall_id": "1176", "movie_id": "1166", "theater_id": "1031", "tickets": "3"}

@@ -1,4 +1,4 @@
-{"id": "1031", "name": "Cinemacity", "img_path": "imgs/GettyImages.png"}
-{"id": "1035", "name": "Imax 2", "img_path": "imgs/GettyImages.png"}
-{"id": "1149", "name": "Dolby Theater", "img_path": "imgs/Dolby.png"}
-{"id": "1152", "name": "New Cinema", "img_path": "imgs/Dolby.png"}
+{"id": "1031", "name": "Loews Theater", "img_path": "imgs/GettyImages.png"}
+{"id": "1035", "name": "CinemaCity Theater", "img_path": "imgs/cinemacity.png"}
+{"id": "1149", "name": "Kodak Theater", "img_path": "imgs/Dolby.png"}
+{"id": "1163", "name": "Regal Theater", "img_path": "imgs/Regal.png"}
