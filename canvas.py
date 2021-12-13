@@ -16,6 +16,7 @@ def create_app():
     bg = ImageTk.PhotoImage(img)
     bg.resize = ("1200x560")
 
+
     label1 = Label(image=bg, bg='black')
     label1.image = bg
     label1.place(x=0, y=0, relwidth=1, relheight=1)

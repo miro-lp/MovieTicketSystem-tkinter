@@ -61,11 +61,18 @@ def all_theater_view():
     frame1 = Frame(tk, height=50, width=150)
     frame1.grid(row=0, column=0, pady=(20, 50))
     navPanel(frame1, login_view)
-    frame2 = Frame(tk, height=200, width=1400)
-    frame2.grid(row=1, column=2, pady=50, padx=(70, 150))
+    frame2 = Frame(tk, height=200, width=1000)
+    frame2.grid(row=1, column=2, pady=50, padx=(70, 50))
+    frame_g = Frame(tk)
+    frame_g.grid(row=0, column=3, pady=(20, 20))
+    greeting(frame_g)
 
     theaters = manager_theater.get_all_items()
     counter = 0
+    if user['role'] == 'accountant':
+        statistic_tickets()
+        return
+
     for t in theaters:
         img1 = Image.open(os.path.join(base_folder, t["img_path"]))
         bg = ImageTk.PhotoImage(img1)
@@ -86,13 +93,19 @@ def all_theater_view():
 
 def admin_control_options():
     clean_screen()
+    frame1 = Frame(tk, height=50, width=150)
+    frame1.grid(row=0, column=0, pady=(20, 50), padx=(0, 20))
+    navPanel(frame1, all_theater_view)
+    frame2 = Frame(tk, height=50, width=500)
+    frame2.grid(row=1, column=1, pady=(20, 50), padx=(20, 20))
+
     options = {'Theater': lambda: crud_operation_view(manager_theater, 'theater'),
                'Movie': lambda: crud_operation_view(manager_movie, 'movie'),
                'Hall': lambda: crud_operation_view(manager_hall, 'hall'),
                'Program': lambda: crud_operation_view(manager_program, 'program')}
 
     for o in options:
-        button = Button(tk, text=f'{o}', bg='green', font=(20), fg="white", height=12, width=24,
+        button = Button(frame2, text=f'{o}', bg='green', font=(20), fg="white", height=12, width=24,
                         command=options[o])
         button.pack(side='left', expand=True)
         button.bind('<Enter>', lambda e, b=button: b.configure(bg="#5bc777"))
@@ -103,6 +116,10 @@ def theater_all_options(id):
     clean_screen()
     frame = Frame(tk)
     frame.grid(row=0, column=0, pady=(20, 20))
+    frame_g = Frame(tk)
+    frame_g.grid(row=0, column=2, pady=(20, 10))
+    greeting(frame_g)
+
     navPanel(frame, all_theater_view)
 
     program = filter(lambda x: x['theater_id'] == id, manager_program.get_all_items())
@@ -112,7 +129,7 @@ def theater_all_options(id):
 
     for item in program:
         frame = Frame(tk)
-        frame.grid(row=counter, column=1, padx=(70, 150), pady=(0, 10))
+        frame.grid(row=counter, column=1, padx=(70, 50), pady=(0, 10))
         movie = list(filter(lambda x: x['id'] == item['movie_id'], manager_movie.get_all_items()))[0]
         hall = list(filter(lambda x: x['id'] == item['hall_id'], manager_hall.get_all_items()))[0]
         data = {'time': [f'Start - End:\n{item["start"]} -{item["end"]}', '',
@@ -126,7 +143,7 @@ def theater_all_options(id):
         # print(item)
         counter += 1
         for i in data:
-            button = Button(frame, text=f'{data[i][0]}', bg='purple', font=(25), fg="white", height=3, width=24,
+            button = Button(frame, text=f'{data[i][0]}', bg='purple', font=(25), fg="white", height=3, width=21,
                             command=data[i][1])
             button.pack(side='left', expand=True)
             button.bind('<Enter>', lambda e, b=button, d=data[i][2]: b.configure(bg="#320E65", text=d))
@@ -134,147 +151,6 @@ def theater_all_options(id):
 
         # print(movie, hall)
 
-
-# def theater_crud_operation():
-#     clean_screen()
-#     theaters = manager_theater.get_all_items()
-#     rows = []
-#     titles = []
-#     counter = 0
-#     for i in theaters[0].keys():
-#         e = Label(relief='ridge', text=i)
-#         e.grid(row=0, column=counter, sticky='nsew')
-#         counter += 1
-#         titles.append(e)
-#     counter += 1
-#     e_a = Label(relief='ridge', text='action')
-#     e_a.grid(row=0, column=counter, sticky='nsew')
-#     titles.append(e_a)
-#     counter += 1
-#     d_a = Label(relief='ridge', text='action')
-#     d_a.grid(row=0, column=counter, sticky='nsew')
-#     titles.append(d_a)
-#     rows.append(titles)
-#     for i in range(len(theaters)):
-#         cols = []
-#         e = Label(relief='ridge', text=theaters[i]['id'])
-#         e.grid(row=i + 1, column=0, sticky='nsew')
-#         cols.append(e)
-#         for j in range(1, 3):
-#             e = Entry(relief='ridge')
-#             e.grid(row=i + 1, column=j, sticky='nsew')
-#             e.insert('end', list(theaters[i].values())[j])
-#             cols.append(e)
-#
-#         e_b = Button(text=f'Edit', bg='yellow', command=lambda c=i, id=theaters[i]['id']: on_edit(id, c))
-#         e_b.grid(row=i + 1, column=4, sticky='nsew')
-#         cols.append(e_b)
-#         d_b = Button(relief='ridge', text='Delete', bg='red', command=lambda id=theaters[i]['id']: on_delete(id))
-#         d_b.grid(row=i + 1, column=5, sticky='nsew')
-#         cols.append(d_b)
-#         rows.append(cols)
-#
-#     Label(text="Name theater", bg='blue', fg="white").grid(row=len(theaters) + 1, column=0, pady=20)
-#     theater_name = Entry(tk, text="name")
-#     theater_name.grid(row=len(theaters) + 1, column=1, padx=10)
-#     Label(text="Img_path of theater", bg='blue', fg="white").grid(row=len(theaters) + 2, column=0)
-#     img_path = Entry(tk, text="img_path")
-#     img_path.grid(row=len(theaters) + 2, column=1, padx=10)
-#     create_btn = Button(tk, text="Create", bg="green", fg="white", height=2, width=15,
-#                         command=lambda: [manager_theater.post_items(
-#                             MovieTheater(check_entries_value(theater_name.get()), check_entries_value(img_path.get()))),
-#                             all_theater_view()])
-#     create_btn.grid(row=len(theaters) + 3, column=2, padx=20, pady=0)
-#     back_btn = Button(tk, text="Back", bg="green", fg="white", height=2, width=15,
-#                       command=lambda: admin_control_options())
-#     back_btn.grid(row=len(theaters) + 3, column=11, padx=20, pady=20)
-#
-#     def on_edit(id, i):
-#         result = {'name': rows[int(i) + 1][1].get(), 'img_path': rows[int(i) + 1][2].get()}
-#         manager_theater.edit_item(id, result)
-#         theater_crud_operation()
-#
-#     def on_delete(id):
-#         manager_theater.delete_item(id)
-#         theater_crud_operation()
-
-
-# def movie_crud_operation():
-#     clean_screen()
-#     movies = manager_movie.get_all_items()
-#     rows = []
-#     titles = []
-#     counter = 0
-#     for i in movies[0].keys():
-#         e = Label(relief='ridge', text=i)
-#         e.grid(row=0, column=counter, sticky='nsew')
-#         counter += 1
-#         titles.append(e)
-#     counter += 1
-#     e_a = Label(relief='ridge', text='action')
-#     e_a.grid(row=0, column=counter, sticky='nsew')
-#     titles.append(e_a)
-#     counter += 1
-#     d_a = Label(relief='ridge', text='action')
-#     d_a.grid(row=0, column=counter, sticky='nsew')
-#     titles.append(d_a)
-#     rows.append(titles)
-#     for i in range(len(movies)):
-#         cols = []
-#         e = Label(relief='ridge', text=movies[i]['id'])
-#         e.grid(row=i + 1, column=0, sticky='nsew')
-#         cols.append(e)
-#         for j in range(1, len(movies[0].keys())):
-#             e = Entry(relief='ridge')
-#             e.grid(row=i + 1, column=j, sticky='nsew')
-#             e.insert('end', list(movies[i].values())[j])
-#             cols.append(e)
-#
-#         e_b = Button(text=f'Edit', bg='yellow', command=lambda c=i, id=movies[i]['id']: on_edit(id, c))
-#         e_b.grid(row=i + 1, column=len(movies[0].keys()) + 1, sticky='nsew')
-#         cols.append(e_b)
-#         d_b = Button(relief='ridge', text='Delete', bg='red', command=lambda id=movies[i]['id']: on_delete(id))
-#         d_b.grid(row=i + 1, column=len(movies[0].keys()) + 2, sticky='nsew')
-#         cols.append(d_b)
-#         rows.append(cols)
-#
-#     Label(text="Title movie", bg='blue', fg="white").grid(row=len(movies) + 1, column=0, pady=20)
-#     movie_name = Entry(tk, text="title")
-#     movie_name.grid(row=len(movies) + 1, column=1, padx=10)
-#     Label(text="Img_path movie", bg='blue', fg="white").grid(row=len(movies) + 2, column=0)
-#     img_path = Entry(tk, text="img_path")
-#     img_path.grid(row=len(movies) + 2, column=1, padx=10)
-#     Label(text="Description movie", bg='blue', fg="white").grid(row=len(movies) + 3, column=0)
-#     description = Entry(tk, text="description")
-#     description.grid(row=len(movies) + 3, column=1, padx=10)
-#     Label(text="Price movie", bg='blue', fg="white").grid(row=len(movies) + 4, column=0)
-#     price = Entry(tk, text="price")
-#     price.grid(row=len(movies) + 4, column=1, padx=10)
-#
-#     create_btn = Button(tk, text="Create", bg="green", fg="white", height=2, width=15,
-#                         command=lambda: [manager_movie.post_items(
-#                             Movie(check_entries_value(movie_name.get()), check_entries_value(img_path.get()),
-#                                   check_entries_value(description.get()), check_entries_value(price.get()),
-#                                   )),
-#                             all_theater_view()])
-#     create_btn.grid(row=len(movies) + 3, column=2, padx=20, pady=0)
-#     back_btn = Button(tk, text="Back", bg="green", fg="white", height=2, width=15,
-#                       command=lambda: admin_control_options())
-#     back_btn.grid(row=len(movies) + 3, column=11, padx=20, pady=20)
-#
-#     def on_edit(id, i):
-#         result = {'title': rows[int(i) + 1][1].get(),
-#                   'img_path': rows[int(i) + 1][2].get(),
-#                   'description': rows[int(i) + 1][3].get(),
-#                   'price': rows[int(i) + 1][4].get(),
-#                   'tickets': rows[int(i) + 1][5].get(),
-#                   }
-#         manager_movie.edit_item(id, result)
-#         movie_crud_operation()
-#
-#     def on_delete(id):
-#         manager_movie.delete_item(id)
-#         movie_crud_operation()
 
 
 def crud_operation_view(manager, class_name):
@@ -285,7 +161,6 @@ def crud_operation_view(manager, class_name):
     counter = 0
     list_labels = list(items[0].keys())
     for label in list_labels:
-
         e = Label(relief='ridge', text=label)
         e.grid(row=0, column=counter, sticky='nsew')
         counter += 1
@@ -305,10 +180,10 @@ def crud_operation_view(manager, class_name):
         e.grid(row=i + 1, column=0, sticky='nsew')
         cols.append(e)
         for j in range(1, len(list_labels)):
-
             e = Entry(relief='ridge')
             e.grid(row=i + 1, column=j, sticky='nsew')
-            e.insert('end', str(list(items[i].values())[j]))
+            # print(list(items[i].values())[j])
+            e.insert('end', json.dumps(list(items[i].values())[j]))
             cols.append(e)
 
         e_b = Button(text=f'Edit', bg='yellow', command=lambda c=i, id=items[i]['id']: on_edit(id, c))
@@ -323,16 +198,20 @@ def crud_operation_view(manager, class_name):
 
     for index in range(classes_dict[class_name][1]):
         label = list_labels[index + 1]
-        Label(text=f"{label}", bg='blue', fg="white").grid(row=len(items) + 1 + index, column=0, pady=20)
+        Label(text=f"{label}", bg='blue', fg="white").grid(row=len(items) + 1 + index, column=0, pady=10)
         c = Entry(tk, text=f"{label}")
         c.grid(row=len(items) + 1 + index, column=1, padx=10)
         rows_create.append(c)
 
     def on_press():
         result = []
-        for el in rows_create:
-            result.append(check_entries_value(el.get()))
-        print(result)
+        try:
+            for el in rows_create:
+                result.append(check_entries_value(el.get()))
+        except ValueError as err:
+            Label(text=f'{err}', bg='#dece7e', fg="red", height=2, width=10, font=('Bold', 15)).grid(row=len(items) + 4,
+                                                                                                     column=2,
+                                                                                                     pady=10)
         return result
 
     create_btn = Button(tk, text="Create", bg="green", fg="white", height=2, width=15,
@@ -347,8 +226,8 @@ def crud_operation_view(manager, class_name):
     def on_edit(id, i):
         result = {}
         for index, label in enumerate(list_labels[1:]):
-            result[label] = rows[int(i) + 1][index + 1].get()
-
+            result[label] = json.loads((rows[int(i) + 1][index + 1].get()))
+        # print(result)
         manager.edit_item(id, result)
         crud_operation_view(manager, class_name)
 
@@ -364,7 +243,14 @@ def navPanel(frame, view):
 
 
 def greeting(frame):
-    pass
+    img1 = Image.open(os.path.join(base_folder, "imgs/greeting.png"))
+    bg1 = ImageTk.PhotoImage(img1)
+
+    ticket = Label(frame, image=bg1, text=f'Name: {user["first_name"]}', font=('Ariel', 12, 'bold'), bg="#B867F0",
+                   fg='black', compound='center')
+    ticket.image = bg1
+
+    ticket.pack(side='left')
 
 
 def reserve_seats(movie, hall, program):
@@ -372,11 +258,15 @@ def reserve_seats(movie, hall, program):
     frame1 = Frame(tk, height=50, width=150)
     frame1.grid(row=0, column=0, pady=(20, 20))
     navPanel(frame1, lambda: theater_all_options(hall['theater_id']))
+
+    frame_g = Frame(tk)
+    frame_g.grid(row=0, column=4, pady=(20, 10), padx=(80, 10))
+    greeting(frame_g)
     frame2 = Frame(tk, height=700, width=700)
     frame2.grid(row=1, column=1, pady=(20, 20), padx=(70, 20), columnspan=3)
     counter = 0
     row = 0
-    print(hall["seats"])
+    # print(hall["seats"])
     seats = sorted(hall["seats"], key=lambda a: a['name'], reverse=True)
     reserved_seats = []
 
@@ -423,7 +313,7 @@ def reserve_seats(movie, hall, program):
             color = 'blue'
 
         button = Button(frame, text=f'{s["name"]}', bg=color, font=(25), fg="white", height=2, width=7,
-                        command=lambda a=s : [reserved_seats.append(a), ticket.configure(text=ticket_text_change())])
+                        command=lambda a=s: [reserved_seats.append(a), ticket.configure(text=ticket_text_change())])
         button.pack(side='right')
 
         button.bind('<Button-1>', lambda e, b=button: b.configure(bg='red', ))
@@ -481,15 +371,17 @@ def details_movie(movie, id):
 
     frame4 = Frame(tk, height=90, width=300)
     frame4.grid(row=1, column=2, pady=(20, 20), padx=(20, 20))
-    price = Label(frame4, text=f'Price: {movie["price"]} lv.', fg="white", bg='black', font=('Comic Sans MS', 18, 'bold'),
-                 compound='center')
+    price = Label(frame4, text=f'Price: {movie["price"]} lv.', fg="white", bg='black',
+                  font=('Comic Sans MS', 18, 'bold'),
+                  compound='center')
     price.pack(anchor='e')
 
     frame5 = Frame(tk, height=90, width=300)
     frame5.grid(row=2, column=2, pady=(20, 20), padx=(20, 20))
-    total_income = Label(frame5, text=f'Box office: {float(movie["price"])*int(movie["tickets"])} lv.', fg="white", bg='black',
-                  font=('Comic Sans MS', 18, 'bold'),
-                  compound='center')
+    total_income = Label(frame5, text=f'Box office: {float(movie["price"]) * int(movie["tickets"])} lv.', fg="white",
+                         bg='black',
+                         font=('Comic Sans MS', 18, 'bold'),
+                         compound='center')
     total_income.pack(anchor='e')
 
     frame6 = Frame(tk, height=100, width=800)
@@ -509,4 +401,63 @@ def details_movie(movie, id):
 
     text.insert('end', f'Description: {movie["description"]}')
 
-    print(movie)
+    # print(movie)
+
+
+def statistic_tickets():
+    clean_screen()
+    frame1 = Frame(tk, height=250, width=1150)
+    frame1.grid(row=0, column=0, pady=(20, 10), padx=(20, 20))
+    frame2 = Frame(tk, height=250, width=1150)
+    frame2.grid(row=1, column=0, pady=(10, 20), padx=(20, 20))
+
+    program_summary = []
+    program = [{'start': i['start'], 'end': i['end'], 'tickets': int(i['tickets'])} for i in
+               manager_program.get_all_items()]
+
+    for i in program:
+        for j in program_summary:
+            if i['start'] == j['start']:
+                j['tickets'] += i['tickets']
+                break
+        else:
+            program_summary.append(i)
+
+    count = len(program_summary)
+    max_ticket = max([i['tickets'] for i in program_summary])
+    program_summary.sort(key=lambda x: x['start'])
+    column = 0
+    for i in program_summary:
+        height = 250 // max_ticket
+        width = 1150 // count
+        h_white = 220 - height * i['tickets']
+
+        w = Canvas(frame1, width=width, height=250)
+        w.grid(row=0, column=column)
+        w.create_rectangle(0, 0, width, h_white, fill="white")
+        w.create_rectangle(0, h_white, width, h_white + height * i['tickets'], fill="#476042")
+        w.create_rectangle(0, h_white + height * i['tickets'], width, h_white + height * i['tickets'] + 30,
+                           fill="yellow")
+        column += 1
+        w.create_text(width // 2, (h_white + height * i['tickets'] // 2), text=f'Sold tickets: {i["tickets"]}')
+        w.create_text(width // 2, h_white + height * i['tickets'] + 15, text=f'{i["start"]} - {i["end"]}')
+
+    movies = manager_movie.get_all_items()
+    count1 = len(movies)
+    max_ticket1 = max([int(i['tickets']) for i in movies])
+    column = 0
+    for i in movies:
+        height = 250 // max_ticket1
+        width = 1150 // count1
+        h_white = 220 - height * int(i['tickets'])
+
+        w = Canvas(frame2, width=width, height=250)
+        w.grid(row=0, column=column)
+        w.create_rectangle(0, 0, width, h_white, fill="white")
+        w.create_rectangle(0, h_white, width, h_white + height * int(i['tickets']), fill="#476042")
+        w.create_rectangle(0, h_white + height * int(i['tickets']), width, h_white + height * int(i['tickets']) + 30,
+                           fill="yellow")
+        column += 1
+        w.create_text(width // 2, (h_white + height * int(i['tickets']) // 2),
+                      text=f'Box office: {int(i["tickets"]) * float(i["price"])} lv.')
+        w.create_text(width // 2, h_white + height * int(i['tickets']) + 15, text=f'{i["title"]}')

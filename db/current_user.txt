@@ -1,1 +1,1 @@
-{'username': '1', 'password': '1', 'first_name': 'miro', 'last_name': 'miro', 'role': 'cashier', 'id': '1001'}
+{'username': '2', 'password': '2', 'first_name': 'Pepi', 'last_name': 'Petrov', 'role': 'accountant', 'id': '1002'}
